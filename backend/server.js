@@ -1,14 +1,19 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const app = express();
+const path = require('path');
 
 dotenv.config();
+const app = express();
+
 app.use(express.json());
 
-// Example route
-app.get('/', (req, res) => {
-  res.send('API is running...');
+// Serve static files from /public
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Sample API route
+app.get('/api', (req, res) => {
+  res.json({ message: 'Hello from the API!' });
 });
 
 // Connect to MongoDB
@@ -20,4 +25,3 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
